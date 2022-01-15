@@ -21,6 +21,22 @@ teacher_collection = database.get_collection('teachers')
 user_collection = database.get_collection('users')
 comment_collection = database.get_collection('comments')
 
+async def login_token(email:str , token: str):
+    user = await user_collection.find_one({"email": email})
+    if user:
+        a = await user_collection.update_one({"email": email}, {"$set": {"token": token}})
+        return True
+    else:
+        return False
+
+async def save_courseTable(email: str, courseTable: str):
+    user = await user_collection.find_one({"email": email})
+    if user:
+        await user_collection.update_one({"email": email}, {"$set": {"courseTable": courseTable}})
+        return True
+    else:
+        return False
+
 async def add_admin(admin_data: dict) -> dict:
     admin = await admin_collection.insert_one(admin_data)
     new_admin = await admin_collection.find_one({"_id": admin.inserted_id})
