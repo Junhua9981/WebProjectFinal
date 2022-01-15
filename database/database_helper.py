@@ -28,6 +28,11 @@ def teacher_helper(teacher) -> dict:
         "sweet_score": teacher['sweet_score'],
     }
 
+def teacher_name_helper(teacher) -> dict:
+    return {
+        "name": teacher['name'],
+    }
+
 def teacher_comment_helper(teacher) -> list:
     ret = []
     for comment in teacher:

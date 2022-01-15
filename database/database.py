@@ -7,7 +7,7 @@ import datetime
 
 from models.teacher import TeacherModel, TeacherCommentModel
 
-from .database_helper import student_helper, admin_helper, teacher_comment_helper, user_helper, teacher_helper, comment_helper
+from .database_helper import student_helper, admin_helper, teacher_comment_helper, user_helper, teacher_helper, comment_helper, teacher_name_helper
 
 MONGO_DETAILS = config('MONGO_DETAILS')
 
@@ -156,6 +156,15 @@ async def retrieve_recent_comment():
     async for comment in comment_collection.find().sort("timestamp", -1).limit(10):
         comments.append(comment_helper(comment))
     return comments
+
+
+async def retrieve_teacher() -> list:
+    teachers = []
+    async for teacher in teacher_collection.find():
+        teachers.append(teacher_name_helper(teacher))
+    return {
+        'teachers':teachers
+    }
 
 
 # async def add_student(student_data: dict) -> dict:
