@@ -7,6 +7,10 @@ def ResponseModel(data, message):
         "message": message,
     }
 
+def CommentResposeModel(comment):
+    return {
+        "comment": comment
+    }
 
 def ErrorResponseModel(error, code, message):
     return {

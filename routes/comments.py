@@ -10,6 +10,6 @@ router = APIRouter()
 @router.get("/", response_description="Get Comment")
 async def get_comment():
     comment = await retrieve_recent_comment()
-    return ResponseModel(comment, "Comment retrieved successfully") \
+    return CommentResposeModel(comment) \
         if comment \
         else ErrorResponseModel("An error occured", 404, "Comment doesn't exist.")

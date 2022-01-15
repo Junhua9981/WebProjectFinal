@@ -130,12 +130,12 @@ async def update_teacher(name: str, data: dict):
 async def update_teacher_comment(name: str, username:str, comment: str):
     teacher = await teacher_collection.find_one({"name": name})
     if teacher:
-        comment_collection.insert_one({"name": name, "comment": comment, "timestamp": datetime.datetime.now()})
+        comment_collection.insert_one({"name": username, "comment": comment, "timestamp": datetime.datetime.now(), "teacher": name})
         if( teacher['comments'] ):
             comments = teacher['comments']
             comments.append({"name": username, "comment": comment, "timestamp": datetime.datetime.now()})
         else:
-            comments = [{"username": username, "comment": comment, "timestamp": datetime.datetime.now()}]
+            comments = [{"name": username, "comment": comment, "timestamp": datetime.datetime.now()}]
         teacher_collection.update_one({"name": name}, {"$set": {"comments": comments}})
         return True
 

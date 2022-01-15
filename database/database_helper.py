@@ -37,5 +37,6 @@ def teacher_comment_helper(teacher) -> list:
 def comment_helper(comment) -> dict:
     return {
         "comment": comment['comment'],
-        "timestamp": comment['timestamp']
+        "timestamp": comment['timestamp'],
+        "teacher": comment['teacher'],
     }
