@@ -16,7 +16,7 @@ hash_helper = CryptContext(schemes=["bcrypt"])
 @router.post("/login")
 async def user_login(user_credentials: HTTPBasicCredentials = Body(...)):
     # NEW CODE
-    user = await user_collection.find_one({"name": user_credentials.username})
+    user = await user_collection.find_one({"email": user_credentials.username})
     if (user):
         password = hash_helper.verify(
             user_credentials.password, user["password"])
