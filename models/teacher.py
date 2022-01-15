@@ -1,4 +1,5 @@
 from distutils.command.config import config
+from sqlite3 import Timestamp
 from typing import Optional, List, Dict, Union
 
 from pydantic import BaseModel, EmailStr, Field
@@ -10,12 +11,12 @@ class GradeModel(BaseModel):
 
 class TeacherModel(BaseModel):
     name:str
-    teaching_subject:list(str)
+    teaching_subject:List[str]
     department:str
     learned_grade:GradeModel
     stress_grade:GradeModel
     sweet_score:GradeModel
-    comment:list(str)
+    comment:List[str]
     config = {
         "schema_extra": {
             "example": {
@@ -37,7 +38,7 @@ class TeacherModel(BaseModel):
                     "graded_user_number": 0,
                     "graded_user": []
                 },
-                "comment": []
+                "comments": []
             }
         }
     }
@@ -45,3 +46,7 @@ class TeacherModel(BaseModel):
 
 class UpdateTeacherModel(TeacherModel):
     pass
+
+class TeacherCommentModel(BaseModel):
+    comment: str
+    timestamp: str

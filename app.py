@@ -6,6 +6,7 @@ from routes.student import router as StudentRouter
 from routes.admin import router as AdminRouter
 from routes.user import router as UserRouter
 from routes.teacher import router as TeacherRouter
+from routes.comments import router as CommentRouter
 from decouple import config
 
 app = FastAPI()
@@ -34,10 +35,10 @@ MOGO = config('MONGO_DETAILS')
 
 @app.get("/", tags=["Root"])
 async def read_root():
-    return {"message": f"Welcome to this fantastic app.{MOGO}"}
+    return {"message": f"Welcome to this fantastic app."}
 
 
 app.include_router(AdminRouter, tags=["Administrator"], prefix="/admin")
 app.include_router(UserRouter, tags=["Users"], prefix="/user")
-# app.include_router(StudentRouter, tags=["Students"], prefix="/student", dependencies=[Depends(token_listener)])
+app.include_router(CommentRouter, tags=["Comments"], prefix="/comment")
 app.include_router(TeacherRouter, tags=["Teachers"], prefix="/teacher", dependencies=[Depends(token_listener)])

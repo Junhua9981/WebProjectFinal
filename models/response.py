@@ -14,3 +14,18 @@ def ErrorResponseModel(error, code, message):
         "code": code,
         "message": message
     }
+
+def LoginFailResModel(status, code, message):
+    return {
+        "status": status,
+        "code": code,
+        "message": message
+    }
+
+def LoginSucResModel(status, code, message, tk):
+    return {
+        "status": status,
+        "code": code,
+        "message": message,
+        "token": tk
+    }

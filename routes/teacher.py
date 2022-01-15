@@ -14,8 +14,15 @@ async def get_teacher_detail(teacher_name: str):
         if teacher \
         else ErrorResponseModel("An error occured", 404, "Teacher doesn't exist.")
 
+@router.get("/{teacher_name}/comment", response_description="Get Teacher Comment")
+async def get_teacher_comment(teacher_name: str):
+    teacher = await retrieve_teacher_comment(teacher_name)
+    return ResponseModel(teacher, "Teacher comment retrieved successfully") \
+        if teacher \
+        else ErrorResponseModel("An error occured", 404, "Teacher doesn't exist.")
+
 @router.post("/{teacher_name}", response_description="Add Teacher Detail")
-async def add_teacher(teacher_name: str):
+async def post_teacher(teacher_name: str):
     teacher = await add_teacher(teacher_name)
     return ResponseModel(teacher, "Teacher data added successfully") \
         if teacher \
@@ -28,9 +35,16 @@ async def modify_teacher_detail(teacher_name: str, teacher_data: TeacherModel):
         if teacher \
         else ErrorResponseModel("An error occured", 404, "Teacher doesn't exist.")
 
-@router.put("/comment/{teacher_name}", response_description="Modify Teacher Comment")
-async def modify_teacher_comment(teacher_name: str, comment: str):
-    teacher = await update_teacher_comment(teacher_name, comment)
+@router.put("/{teacher_name}/score", response_description="Modify Teacher Score")
+async def put_teacher_score(teacher_name: str, user: str, learned_grade: float=None, stress_grade: float=None, sweet_score: float=None):
+    teacher = await modify_teacher_score(teacher_name, user, learned_grade, stress_grade, sweet_score)
+    return ResponseModel(teacher, "Teacher score modified successfully") \
+        if teacher \
+        else ErrorResponseModel("An error occured", 404, "Teacher doesn't exist.")
+
+@router.put("/{teacher_name}/comment", response_description="Modify Teacher Comment")
+async def modify_teacher_comment(teacher_name: str, username: str ,comment: str):
+    teacher = await update_teacher_comment(teacher_name, username, comment)
     return ResponseModel(teacher, "Teacher comment modified successfully") \
         if teacher \
         else ErrorResponseModel("An error occured", 404, "Teacher doesn't exist.")

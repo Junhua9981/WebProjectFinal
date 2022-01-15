@@ -15,8 +15,6 @@ def admin_helper(admin) -> dict:
 
 def user_helper(user) -> dict:
     return {
-        "id": str(user['_id']),
-        "name": user['name'],
         "email": user['email'],
     }
 
@@ -26,11 +24,18 @@ def teacher_helper(teacher) -> dict:
         "department": teacher['department'],
         "teaching_subject": teacher['teaching_subject'],
         "learned_grade": teacher['learned_grade'],
-        "stress_grad": teacher['stress_grad'],
+        "stress_grade": teacher['stress_grade'],
         "sweet_score": teacher['sweet_score'],
     }
 
-def teacher_comment_helper(teacher) -> dict:
+def teacher_comment_helper(teacher) -> list:
+    ret = []
+    for comment in teacher:
+        ret.append({"comment": comment['comment'], "timestamp": comment['timestamp']})
+    return ret
+
+def comment_helper(comment) -> dict:
     return {
-        "comment": teacher['comment'],
+        "comment": comment['comment'],
+        "timestamp": comment['timestamp']
     }
