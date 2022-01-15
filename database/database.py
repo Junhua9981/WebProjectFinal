@@ -2,6 +2,8 @@ import motor.motor_asyncio
 from bson import ObjectId
 from decouple import config
 import datetime
+# from database.tools import v_code
+# import tools
 
 from models.teacher import TeacherModel, TeacherCommentModel
 
@@ -25,6 +27,7 @@ async def add_admin(admin_data: dict) -> dict:
     return admin_helper(new_admin)
 
 async def add_user(user_data: dict) -> dict:
+    # activeCode = v_code()
     user = await user_collection.insert_one(user_data)
     new_user = await user_collection.find_one({"_id": user.inserted_id})
     return user_helper(new_user)
