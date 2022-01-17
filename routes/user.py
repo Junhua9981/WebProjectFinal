@@ -7,7 +7,7 @@ from pydantic import BaseModel
 from database.database import login_token, user_collection
 from auth.jwt_handler import signJWT
 from database.database import add_user
-from models.user import UserModel
+from models.user import UserModel, RegisterUserModel
 from models.response import LoginFailResModel, LoginSucResModel, ResponseModel
 
 router = APIRouter()
@@ -31,7 +31,7 @@ async def user_login(user_credentials: HTTPBasicCredentials = Body(...)):
     return LoginFailResModel("Fail", 404,"Incorrect email or password")
 
 @router.post("/register")
-async def user_signup(user: UserModel = Body(...)):
+async def user_signup(user: RegisterUserModel = Body(...)):
     user_exists = await user_collection.find_one({"email":  user.email})
     if(user_exists):
         return "Email already exists"
