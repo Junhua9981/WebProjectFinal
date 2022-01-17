@@ -24,8 +24,11 @@ def teacher_helper(teacher) -> dict:
         "department": teacher['department'],
         "teaching_subject": teacher['teaching_subject'],
         "learned_grade": teacher['learned_grade'],
+        "learned_graded_user_number": teacher['learned_graded_user_number'],
         "stress_grade": teacher['stress_grade'],
+        "stress_graded_user_number": teacher['stress_graded_user_number'],
         "sweet_score": teacher['sweet_score'],
+        "sweet_graded_user_number": teacher['sweet_graded_user_number'],
     }
 
 def teacher_name_helper(teacher) -> dict:

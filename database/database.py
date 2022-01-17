@@ -104,9 +104,12 @@ async def search_teacher(name: str):
             "name": teacher['name'],
             "department": teacher['department'],
             "teaching_subject": teacher['teaching_subject'],
-            "learned_grade": teacher['learned_grade']['grade']/teacher['learned_grade']['graded_user_number'] if teacher['learned_grade']['graded_user_number'] else 0,
-            "stress_grade": teacher['stress_grade']['grade']/teacher['stress_grade']['graded_user_number'] if teacher['stress_grade']['graded_user_number'] else 0,
-            "sweet_score": teacher['sweet_score']['grade']/teacher['sweet_score']['graded_user_number'] if teacher['sweet_score']['graded_user_number'] else 0
+            "learned_grade": teacher['learned_grade']['grade'] if teacher['learned_grade']['graded_user_number'] else -1,
+            "learned_graded_user_number": teacher['learned_grade']['graded_user_number'] if teacher['learned_grade']['graded_user_number'] else -1,
+            "stress_grade": teacher['stress_grade']['grade'] if teacher['stress_grade']['graded_user_number'] else -1,
+            "stress_graded_user_number": teacher['stress_grade']['graded_user_number'] if teacher['stress_grade']['graded_user_number'] else -1,
+            "sweet_score": teacher['sweet_score']['grade'] if teacher['sweet_score']['graded_user_number'] else -1,
+            "sweet_graded_user_number": teacher['sweet_score']['graded_user_number'] if teacher['sweet_score']['graded_user_number'] else -1,
         }
         return teacher_helper(ret)
 
@@ -149,6 +152,9 @@ async def update_teacher(name: str, data: dict):
 async def update_teacher_comment(name: str, username:str, comment: str):
     teacher = await teacher_collection.find_one({"name": name})
     if teacher:
+        for user in teacher['comments']:
+            if username==user['name']:
+                return False
         comment_collection.insert_one({"name": username, "comment": comment, "timestamp": datetime.datetime.now(), "teacher": name})
         if( teacher['comments'] ):
             comments = teacher['comments']
@@ -157,6 +163,8 @@ async def update_teacher_comment(name: str, username:str, comment: str):
             comments = [{"name": username, "comment": comment, "timestamp": datetime.datetime.now()}]
         teacher_collection.update_one({"name": name}, {"$set": {"comments": comments}})
         return True
+    else:
+        return False
 
 async def retrieve_teacher_comment(name: str):
     teacher = await teacher_collection.find_one({"name": name})
@@ -165,7 +173,7 @@ async def retrieve_teacher_comment(name: str):
         # for comment in teacher['comments']:
         #     ret.append({"comment": comment['comment'], "timestamp": comment['timestamp']})
         # return ret 
-        return teacher_comment_helper(teacher['comments'])
+        return teacher_comment_helper(teacher['comments']) if len(teacher['comments'])>0 else []
 
 async def retrieve_recent_comment():
     comments = []
