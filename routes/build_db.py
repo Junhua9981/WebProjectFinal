@@ -3,6 +3,7 @@ import json
 import motor.motor_asyncio
 from bson import ObjectId
 from decouple import config
+from pydantic import BaseModel
 # from database.tools import v_code
 # import tools
 
@@ -15,13 +16,17 @@ database = client.webproject
 
 # student_collection = database.get_collection('students_collection')
 teacher_collection = database.get_collection('teachers') 
+comment_collection = database.get_collection('comments')
 router = APIRouter()
 
 SECRET = config('secret')
 
-@router.post("/", response_description="YA")
-async def build_db(secret: str = Body(...)):
-    if(secret == SECRET):
+class secretModel(BaseModel):
+    secrets: str
+
+@router.post("/build_db", response_description="db")
+async def build_db(secret: secretModel = Body(...)):
+    if(secret.secrets == SECRET):
         data = []
         with open(r'routes\result.json', 'r', encoding="UTF-8") as obj:
             data = json.load(obj)
@@ -51,6 +56,21 @@ async def build_db(secret: str = Body(...)):
         return {
             "status": "success",
             "code": 200
+        }
+    else:
+        return {
+            "status": "fail",
+            "code": 400
+        }
+
+@router.post("/clear_comment", response_description="clear_comment")
+async def clear_comment(secret: secretModel = Body(...)):
+    if(secret.secrets == str(SECRET)):
+        de = comment_collection.delete_many({})
+        return {
+            "status": "success",
+            "code": 200,
+            "msg": "clear comment success"
         }
     else:
         return {
