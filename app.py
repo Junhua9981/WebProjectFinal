@@ -1,9 +1,8 @@
 from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
-
 from auth.jwt_bearer import JWTBearer
-from routes.student import router as StudentRouter
-from routes.admin import router as AdminRouter
+# from routes.student import router as StudentRouter
+# from routes.admin import router as AdminRouter
 from routes.user import router as UserRouter
 from routes.teacher import router as TeacherRouter
 from routes.comments import router as CommentRouter

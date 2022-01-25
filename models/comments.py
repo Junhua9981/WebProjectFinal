@@ -5,3 +5,4 @@ class CommentModel(BaseModel):
     comment: str = Field(...)
     name: str = Field(...)
     timestamp: Timestamp = Field(...)
+    course: str = Field(...)

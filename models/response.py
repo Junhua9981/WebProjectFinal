@@ -12,11 +12,25 @@ def CommentResposeModel(comment):
         "comment": comment
     }
 
-def ErrorResponseModel(error, code, message):
+def SuccessResponseModel(status, code, message):
     return {
-        "error": error,
+        "status": status,
         "code": code,
         "message": message
+    }
+
+def ErrorResponseModel(error, code, message):
+    return {
+        "status": error,
+        "code": code,
+        "message": message
+    }
+
+def ResModel(status, code, message):
+    return {
+        "status": status,
+        "code": code,
+        "message": message,
     }
 
 def LoginFailResModel(status, code, message):
