@@ -9,6 +9,7 @@ class GradeModel(BaseModel):
     graded_user_number: int
     graded_user: List[str]
 
+
 class TeacherModel(BaseModel):
     name:str
     teaching_subject:List[str]

@@ -1,7 +1,5 @@
-import sys
 from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
-import asyncio
 from auth.jwt_bearer import JWTBearer
 # from routes.student import router as StudentRouter
 # from routes.admin import router as AdminRouter
@@ -35,8 +33,6 @@ app.add_middleware(CORSMiddleware,
 
 JWT_SECRET = config('secret')
 MOGO = config('MONGO_DETAILS')
-
-
 
 @app.get("/", tags=["Root"])
 async def read_root():

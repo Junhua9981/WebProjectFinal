@@ -1,12 +1,13 @@
+from ast import Str
 import motor.motor_asyncio
 from bson import ObjectId
 from decouple import config
 import datetime
-# from database.tools import v_code
+from database.tools import v_code
+from database.mail import send_mail
 # import tools
 
 from models.teacher import TeacherModel, TeacherCommentModel
-
 from .database_helper import student_helper, admin_helper, teacher_comment_helper, user_helper, teacher_helper, comment_helper, teacher_name_helper
 
 MONGO_DETAILS = config('MONGO_DETAILS')
@@ -40,10 +41,21 @@ async def save_courseTable(email: str, courseTable: str):
 #     new_admin = await admin_collection.find_one({"_id": admin.inserted_id})
 #     return admin_helper(new_admin)
 
+async def send_activate_mail(email: Str):
+    activateCode = v_code()
+    await send_mail(email, "Here is your activate code" ,activateCode)
+    user = await user_collection.find_one({"email": email})
+    if user :
+        await user_collection.update_one({"email": email}, {"$set": {"activateCode": activateCode}})
+        return True
+    else :
+        user = await user_collection.insert_one({"email": email, "activateCode": activateCode})
+        return True
+    return False
+
 async def add_user(user_data: dict) -> dict:
-    # activeCode = v_code()
-    user = await user_collection.insert_one(user_data)
-    new_user = await user_collection.find_one({"_id": user.inserted_id})
+    user_collection.update_one({"email": user_data['email']}, {"$set": user_data})
+    new_user = await user_collection.find_one({"email": user_data['email']})
     return user_helper(new_user)
 
 async def retrieve_users() -> list:
