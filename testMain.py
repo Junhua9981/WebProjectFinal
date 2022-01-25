@@ -9,5 +9,5 @@ from app import app
 
 # Linux 則用main.py就好
 if __name__ == "__main__":
-    server = Server(config=Config(app=app,loop=ProactorEventLoop(),debug=True,reload=True))
+    server = Server(config=Config(app=app,loop=ProactorEventLoop()))
     get_event_loop().run_until_complete(server.serve())
