@@ -77,27 +77,30 @@ async def modify_teacher_score(teacher_name:str, user:str, learned_grade:float=N
         if(user in teacher['learned_grade']['graded_user']):
             ret += "learned grade "
         else:
-            teacher['learned_grade']['graded_user'].append(user)
-            teacher['learned_grade']['grade']=(teacher['learned_grade']['grade']*teacher['learned_grade']['graded_user_number']+learned_grade)/(teacher['learned_grade']['graded_user_number']+1)
-            teacher['learned_grade']['graded_user_number']+=1
+            if(learned_grade>=0 and learned_grade<=5):
+                teacher['learned_grade']['graded_user'].append(user)
+                teacher['learned_grade']['grade']=(teacher['learned_grade']['grade']*teacher['learned_grade']['graded_user_number']+learned_grade)/(teacher['learned_grade']['graded_user_number']+1)
+                teacher['learned_grade']['graded_user_number']+=1
             # admin_collection.update_one({"name": teacher_name}, {"$set": teacher})
-            flag=True
+                flag=True
         if(user in teacher['stress_grade']['graded_user']):
             ret += "stress grade "
         else:
-            teacher['stress_grade']['graded_user'].append(user)
-            teacher['stress_grade']['grade']=(teacher['stress_grade']['grade']*teacher['stress_grade']['graded_user_number']+stress_grade)/(teacher['stress_grade']['graded_user_number']+1)
-            teacher['stress_grade']['graded_user_number']+=1
-            # admin_collection.update_one({"name": teacher_name}, {"$set": teacher})
-            flag=True
+            if(stress_grade>=0 and stress_grade<=5):
+                teacher['stress_grade']['graded_user'].append(user)
+                teacher['stress_grade']['grade']=(teacher['stress_grade']['grade']*teacher['stress_grade']['graded_user_number']+stress_grade)/(teacher['stress_grade']['graded_user_number']+1)
+                teacher['stress_grade']['graded_user_number']+=1
+                # admin_collection.update_one({"name": teacher_name}, {"$set": teacher})
+                flag=True
         if(user in teacher['sweet_score']['graded_user']):
             ret += "sweet score"
         else:
-            teacher['sweet_score']['graded_user'].append(user)
-            teacher['sweet_score']['grade']=(teacher['sweet_score']['grade']*teacher['sweet_score']['graded_user_number']+sweet_score)/(teacher['sweet_score']['graded_user_number']+1)
-            teacher['sweet_score']['graded_user_number']+=1
-            # admin_collection.update_one({"name": teacher_name}, {"$set": teacher})
-            flag=True
+            if(sweet_score>=0 and sweet_score<=5):
+                teacher['sweet_score']['graded_user'].append(user)
+                teacher['sweet_score']['grade']=(teacher['sweet_score']['grade']*teacher['sweet_score']['graded_user_number']+sweet_score)/(teacher['sweet_score']['graded_user_number']+1)
+                teacher['sweet_score']['graded_user_number']+=1
+                # admin_collection.update_one({"name": teacher_name}, {"$set": teacher})
+                flag=True
         if(flag):
             teacher_collection.update_one({"name": teacher_name}, {"$set": teacher})
             return True

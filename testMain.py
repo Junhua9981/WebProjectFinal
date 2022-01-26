@@ -1,4 +1,4 @@
-from asyncio import ProactorEventLoop, get_event_loop
+from asyncio import ProactorEventLoop, set_event_loop, ProactorEventLoop, get_event_loop
 from uvicorn import Config, Server
 from fastapi import FastAPI
 from app import app
@@ -11,3 +11,12 @@ from app import app
 if __name__ == "__main__":
     server = Server(config=Config(app=app,loop=ProactorEventLoop(),debug=True,reload=True))
     get_event_loop().run_until_complete(server.serve())
+
+
+
+# from asyncio import ProactorEventLoop, set_event_loop, ProactorEventLoop, get_event_loop
+# from uvicorn import Config, Server
+# if __name__ == "__main__":
+#     set_event_loop(ProactorEventLoop())
+#     server = Server(config=Config(app=app))
+#     get_event_loop().run_until_complete(server.serve())
